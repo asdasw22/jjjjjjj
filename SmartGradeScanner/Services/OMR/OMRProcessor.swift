@@ -833,7 +833,7 @@ struct OMRProcessor: Sendable {
       }
       let aspectEvidence = max(0, min(1, document.aspectScore))
 
-      var effectiveAlignment = rawAlignment
+      let effectiveAlignment = rawAlignment
       var warning: String?
       var strongRegistration = false
 

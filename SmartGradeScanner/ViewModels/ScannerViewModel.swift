@@ -77,8 +77,10 @@ import UIKit
     let debugDiagnostics = UserDefaults.standard.bool(forKey: "debugMode")
     let diagnosticsSink: OMRDiagnosticsSink? =
       debugDiagnostics
-      ? { diagnostics, original, warped in
-        AlignmentDebugStore.save(diagnostics, original: original, warpedCanonical: warped)
+      ? { @Sendable diagnostics, original, warped in
+        Task { @MainActor in
+          AlignmentDebugStore.save(diagnostics, original: original, warpedCanonical: warped)
+        }
       } : nil
     let omrProcessor = processor
     stage = .detectingPaper

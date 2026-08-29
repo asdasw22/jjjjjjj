@@ -140,7 +140,6 @@ struct StudentIDDetector: Sendable {
     results.reserveCapacity(definition.columns.count)
     var digits = ""
     var invalidState: StudentIDResultState?
-    var invalidColumn = 0
 
     for (columnIndex, column) in definition.columns.enumerated() {
       let number = columnIndex + 1
@@ -158,7 +157,7 @@ struct StudentIDDetector: Sendable {
           StudentIDColumnResult(
             column: number, state: .unreadable, digit: nil,
             bestSignal: 0, secondSignal: 0, margin: 0, confidence: 0))
-        if invalidState == nil { invalidState = .unreadable; invalidColumn = number }
+        if invalidState == nil { invalidState = .unreadable }
         continue
       }
 
@@ -224,13 +223,12 @@ struct StudentIDDetector: Sendable {
         digits.append(String(best.digit))
       case .multiple:
         invalidState = .invalidMultiple
-        invalidColumn = number
       case .ambiguous:
-        if invalidState == nil { invalidState = .invalidAmbiguous; invalidColumn = number }
+        if invalidState == nil { invalidState = .invalidAmbiguous }
       case .blank:
-        if invalidState == nil { invalidState = .invalidBlankColumn; invalidColumn = number }
+        if invalidState == nil { invalidState = .invalidBlankColumn }
       case .unreadable:
-        if invalidState == nil { invalidState = .unreadable; invalidColumn = number }
+        if invalidState == nil { invalidState = .unreadable }
       }
     }
 

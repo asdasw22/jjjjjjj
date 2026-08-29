@@ -372,17 +372,19 @@ struct MarkerCandidateLocator: Sendable {
             0,
             stats.score * 0.50 + stats.cornerFill * 0.20 + solidity * 0.18
               + shapeScore * 0.12))
-        let scale = Double(max(raw.width, raw.height)) / Double(max(workW, workH))
-        let centerWork = CGPoint(x: (minX + maxX) * 0.5, y: (minY + maxY) * 0.5)
+        let scale = CGFloat(max(raw.width, raw.height)) / CGFloat(max(workW, workH))
+        let centerWork = CGPoint(
+          x: CGFloat(minX + maxX) / 2.0,
+          y: CGFloat(minY + maxY) / 2.0)
         let centerRaw = CGPoint(x: centerWork.x * scale, y: centerWork.y * scale)
         result.append(
           MarkerCandidate(
             center: centerRaw,
             normalizedCenter: CGPoint(
-              x: centerRaw.x / Double(raw.width), y: centerRaw.y / Double(raw.height)),
+              x: centerRaw.x / CGFloat(raw.width), y: centerRaw.y / CGFloat(raw.height)),
             normalizedSize: CGSize(
-              width: Double(boxWidth) * scale / Double(raw.width),
-              height: Double(boxHeight) * scale / Double(raw.height)),
+              width: CGFloat(boxWidth) * scale / CGFloat(raw.width),
+              height: CGFloat(boxHeight) * scale / CGFloat(raw.height)),
             confidence: confidence))
       }
     }
